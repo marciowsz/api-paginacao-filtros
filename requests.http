@@ -1,0 +1,44 @@
+### Requisições de teste (extensão REST Client do VS Code ou IntelliJ HTTP Client)
+@base = http://localhost:3000
+
+### Paginação básica (página 1, 10 itens)
+GET {{base}}/produtos
+
+### Página 2 com 10 itens
+GET {{base}}/produtos?page=2&limit=10
+
+### Ordenação: mais caros primeiro
+GET {{base}}/produtos?sort=preco&order=desc
+
+### Filtros: eletrônicos ativos
+GET {{base}}/produtos?categoria=eletronicos&ativo=true
+
+### Busca por nome
+GET {{base}}/produtos?search=notebook
+
+### Filtro de intervalo: preço entre 100 e 500
+GET {{base}}/produtos?minPrice=100&maxPrice=500
+
+### Tudo junto (os links do meta preservam todos os filtros)
+GET {{base}}/produtos?page=2&limit=3&sort=preco&order=desc&categoria=eletronicos&ativo=true
+
+### Proteção: limit gigante é forçado para 100
+GET {{base}}/produtos?limit=9999999
+
+### 400 - página 0 e campo de ordenação não permitido
+GET {{base}}/produtos?page=0&sort=senha
+
+### 400 - minPrice maior que maxPrice
+GET {{base}}/produtos?minPrice=500&maxPrice=100
+
+### 400 - parâmetro com erro de digitação
+GET {{base}}/produtos?categria=livros
+
+### 200 - página além do fim (data vazio)
+GET {{base}}/produtos?page=99
+
+### Rotas da Semana 5 continuam funcionando
+POST {{base}}/produtos
+Content-Type: application/json
+
+{ "sku": "CEL-999", "nome": "Smartphone Teste", "categoria": "eletronicos", "preco": 1999.9, "estoque": 5 }
